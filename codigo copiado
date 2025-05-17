@@ -1,0 +1,82 @@
+#programa control de stock
+productos = []
+cantidades = []
+
+def agregar_producto():
+    nombre = input("Nombre del producto: ").strip()
+    if nombre in productos:
+        print("Ese producto ya existe.")
+        return
+    while True:
+        try:
+            cantidad = int(input(f"Cantidad inicial para '{nombre}': "))
+            if cantidad < 0:
+                print("La cantidad no puede ser negativa.")
+                continue
+            productos.append(nombre)
+            cantidades.append(cantidad)
+            print(f"Producto '{nombre}' agregado con {cantidad} unidades.")
+            break
+        except ValueError:
+            print("Ingrese un número válido.")
+
+def ver_agotados():
+    print("\nProductos agotados:")
+    agotados = False
+    for i in range(len(productos)):
+        if cantidades[i] == 0:
+            print(f"- {productos[i]}")
+            agotados = True
+    if not agotados:
+        print("Ningún producto está agotado.")
+
+def actualizar_stock():
+    nombre = input("Nombre del producto a actualizar: ").strip()
+    encontrado = False
+    for i in range(len(productos)):
+        if productos[i].lower() == nombre.lower():
+            encontrado = True
+            while True:
+                try:
+                    nueva_cantidad = int(input(f"Nuevo stock para '{productos[i]}': "))
+                    if nueva_cantidad < 0:
+                        print("No puede ser negativo.")
+                        continue
+                    cantidades[i] = nueva_cantidad
+                    print(f"Stock de '{productos[i]}' actualizado a {nueva_cantidad}.")
+                    break
+                except ValueError:
+                    print("Ingrese un número válido.")
+            break
+    if not encontrado:
+        print("Producto no encontrado.")
+
+def ver_todos():
+    if len(productos) == 0:
+        print("No hay productos registrados.")
+    else:
+        print("\nListado de productos y stock:")
+        for i in range(len(productos)):
+            print(f"- {productos[i]}: {cantidades[i]}")
+
+while True:
+    print("\n🛒 Menú de opciones:")
+    print("1. Agregar producto")
+    print("2. Ver productos agotados")
+    print("3. Actualizar stock")
+    print("4. Ver todos los productos")
+    print("5. Salir")
+    opcion = input("Seleccione una opción (1-5): ")
+    if opcion == "1":
+        agregar_producto()
+    elif opcion == "2":
+        ver_agotados()
+    elif opcion == "3":
+        actualizar_stock()
+    elif opcion == "4":
+        ver_todos()
+    elif opcion == "5":
+        print("¡Hasta luego!")
+        break
+    else:
+        print("Opción inválida.")
